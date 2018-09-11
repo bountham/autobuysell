@@ -14,7 +14,9 @@ Text Domain: Autobuysell
 
 /* !1. HOOKS */
  add_action('admin_menu','abs_admin_menus');
-// add_action('plugins_loaded','abs_creat_tble');
+// register activate/deactivate/uninstall functions
+register_activation_hook( __FILE__, 'abs_activate_plugin' );
+
 
 
 
@@ -147,16 +149,54 @@ function abs_api_setting() {
 
 function abs_creat_tble () {
 	//creat tables
-    global $wpdb;    
-     require_once( ABSPATH . './wp-config.php' );
-     $custom_table = $wpdb->prefix . 'custom_table_name';
-        $sql = "CREATE TABLE IF NOT EXISTS $custom_table (
-    id mediumint(9) NOT NULL,
-    col1 varchar(50) NOT NULL,
-    col2 varchar(500) NOT NULL,
-    ) $charset_collate;";
+    global $wpdb;  
 
-        dbDelta($sql);
+    //setup return value
+    $return_value = false;
+
+ try {
+
+   $table_name = $wpdb->prefix . "abs_cars_db";
+   $charset_collate = $wpdb->get_charset_collate();
+
+   //sql for our table creation
+   $sql = "CREATE TABLE $table_name (
+      id mediumint(11) NOT NULL AUTO_INCREMENT,
+      api_number mediumint(11) NOT NULL,
+      list_id mediumint(11) NOT NULL,
+      attachment_id mediumint(11) NOT NULL,
+      car_model mediumint(11) DEFAULT 0 NOT NULL ,
+      UNIQUE KEY id (id)
+      ) $charset_collate;";
+
+    // make sure we include wordpress functions for dbDelta  
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+    // dbDelta will create a new table if none exists or update an existing one
+    dbDelta($sql);
+
+    // return true
+    $return_value = true;
+   
+ } catch (Exception $e) {
+  //php error 
+
+  echo "not working";
+   
+ }
+    
+//return result
+ return $return_value;
+
+
+}
+
+// hint: runs on plugin activation
+function abs_activate_plugin() {
+  
+  // setup custom database tables
+  abs_creat_tble();
+  
 }
 
 
