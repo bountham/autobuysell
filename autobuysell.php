@@ -128,11 +128,15 @@ function abs_welcome_page(){
 
 
 
-function abs_api_setting() {
+function abs_api_setting( $args, $content="") {
+  $list_id = 0;
+  if(isset($args['id'])) $list_id= (int)$args['id'];
 	$output = '
-		<div class="abs-welcome-admin-age">
-		 <form id="abs_api_fml" action="#" method="">
+
+		   <div class="abs_insert_api">
+		 <form id="abs_api_fml" action="/wp-admin/admin-ajax.php?action=abs_save_api" method="post">
 		 <label><h3>Autobuysell API#</h3></label>
+     <input type="hidden" name="abs_list"  value="'.$list_id . '";
 		 <input type = "text" name="abs_api_text" size="100"><br><br>
 		 <input type="submit" value="Save">
 		 </form
