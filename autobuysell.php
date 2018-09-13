@@ -95,7 +95,8 @@ function abs_autobuysell_api_request() {
 
 
 
-/* !5. ACTIONS */
+
+
 
 
 
@@ -129,16 +130,15 @@ function abs_welcome_page(){
 
 
 function abs_api_setting( $args, $content="") {
-  $list_id = 0;
-  if(isset($args['id'])) $list_id= (int)$args['id'];
+  
 	$output = '
 
 		   <div class="abs_insert_api">
 		 <form id="abs_api_fml" action="/wp-admin/admin-ajax.php?action=abs_save_api" method="post">
+
 		 <label><h3>Autobuysell API#</h3></label>
-     <input type="hidden" name="abs_list"  value="'.$list_id . '";
-		 <input type = "text" name="abs_api_text" size="100"><br><br>
-		 <input type="submit" value="Save">
+    		 <input type = "text" name="abs_api_number" size="100"><br><br>
+    		 <input type="submit" value="Save">
 		 </form
 		</div>
 
@@ -148,8 +148,7 @@ function abs_api_setting( $args, $content="") {
 
 
 
-// /* !9. SETTINGS */
-
+// /* !9. create table when the plugin are active*/
 
 function abs_creat_tble () {
 	//creat tables
@@ -200,6 +199,9 @@ function abs_activate_plugin() {
   
   // setup custom database tables
   abs_creat_tble();
+  // insert api into db
+  abs_save_api()
+
   
 }
 
