@@ -199,8 +199,7 @@ function abs_activate_plugin() {
   
   // setup custom database tables
   abs_creat_tble();
-  // insert api into db
-  abs_save_api()
+ 
 
   
 }
